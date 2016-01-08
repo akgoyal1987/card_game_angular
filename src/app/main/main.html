@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="row"  style="margin:15%">
+    <!-- 1st row verticaly centered text in the square columns -->
+    <div class="col-md-3"><h4 class="moves_time"> Moves : {{moves}}</h4></div>
+    <div class="col-md-6">
+      <button ng-disabled="!enableStartButton" ng-click="start();" type="button" class="btn btn-primary btn-block btn-lg">{{btnText}}</button>
+    </div>
+    <div class="col-md-3"><h4 class="moves_time"> Time : {{time}}</h4></div>
+    <div class="col-md-12">
+      <div class="square" ng-repeat="card in cards track by $index"
+      ng-click="cardClick(card)"
+      ng-class="card.state">
+          <div class="content" style="background:{{card.color}}">
+          </div>
+      </div>
+    </div>
+    <div class="col-md-12" style="color: green;">
+      {{message}}
+    </div>
+  </div>
+</div>
