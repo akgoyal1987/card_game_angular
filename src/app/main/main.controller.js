@@ -5,23 +5,25 @@
     .module('game')
     .controller('MainController', MainController);
 
+    MainController.$inject = ['$timeout'];
   /** @ngInject */
-  function MainController($timeout, webDevTec, toastr, $rootScope, $scope) {
+  function MainController($timeout) {
     var colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#00FFFF', '#FF00FF', '#C0C0C0', '#abeebb', '#966975', '#7a5d5a', '#fddfd3', '#a8c093', '#b08e7b', '#abcdef', '#456789', '#6d7f00', '#b19bd9', '#2e1b48', '#fdb058', '#FF9780', '#008080', '#A52A2A', '#B8860B', '#8A2BE2'];
+    var vm = this;
     var cards = [];
     var stateOpen = 'open';
     var stateClose = 'close';
     var stateMatch = 'match';
-    $scope.btnText = "Start";
-    $scope.enableStartButton = true;   
+    vm.btnText = "Start";
+    vm.enableStartButton = true;   
 
     var preparePlayGround = function(){
 
-      $scope.moves = 0;
-    $scope.time = 0;
-    $scope.finished = false;
+    vm.moves = 0;
+    vm.time = 0;
+    vm.finished = false;
 
-      for(var i=0; i<18 ; i++){
+      for(var ii=0; ii<18 ; ii++){
         var rand = Math.floor(Math.random() * (colors.length-1)); 
         cards.push({color : colors[rand], id : rand, state : stateClose});
         cards.push({color : colors[rand], id : rand, state : stateClose});
@@ -33,19 +35,19 @@
         cards[i] = cards[j];
         cards[j] = temp;
       }
-      $scope.cards = angular.copy(cards);     
+      vm.cards = angular.copy(cards);     
     }
     preparePlayGround();
 
     var timeTicker;
-    $scope.start = function(){
-      $scope.enableStartButton = false;  
-      if($scope.btnText == "Restart"){
+    vm.start = function(){
+      vm.enableStartButton = false;  
+      if(vm.btnText == "Restart"){
         preparePlayGround();
       }
       var timeTick = function(){
         timeTicker = $timeout(function() {
-          $scope.time++;
+          vm.time++;
           timeTick();
         }, 1000);
       } 
@@ -54,9 +56,9 @@
 
 
     var openCards = [];
-    $scope.finished = false;
-    $scope.cardClick = function(card){
-      if($scope.finished || $scope.enableStartButton || card.state === stateMatch || card.state === stateOpen){
+    vm.finished = false;
+    vm.cardClick = function(card){
+      if(vm.finished || vm.enableStartButton || card.state === stateMatch || card.state === stateOpen){
         return;
       }
       if(openCards.length === 0){
@@ -64,7 +66,7 @@
         openCards.push(card);
       }else if(openCards.length == 1){
         card.state = stateOpen;
-        $scope.moves++;
+        vm.moves++;
 
         openCards.push(card);
         if(openCards[0].id === openCards[1].id){
@@ -74,13 +76,13 @@
         cards.splice(cards.indexOf(openCards[0]), 1);
         cards.splice(cards.indexOf(openCards[1]), 1);
         if(cards.length === 0){
-          $scope.finished = true;
-          $scope.message = "Congratulations you have won the game !!!";
+          vm.finished = true;
+          vm.message = "Congratulations you have won the game !!!";
           $timeout.cancel(timeTicker);
-          $scope.btnText = "Restart";
-          $scope.enableStartButton = true;
+          vm.btnText = "Restart";
+          vm.enableStartButton = true;
         }
-        }else{
+      }else{
           $timeout(function() {
             openCards[0].state = stateClose;
           openCards[1].state = stateClose;
