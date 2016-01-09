@@ -77,7 +77,7 @@
         cards.splice(cards.indexOf(openCards[1]), 1);
         if(cards.length === 0){
           vm.finished = true;
-          vm.message = "Congratulations you have won the game !!!";
+          vm.message = "Congratulations you won the game !!!";
           $timeout.cancel(timeTicker);
           vm.btnText = "Restart";
           vm.enableStartButton = true;
